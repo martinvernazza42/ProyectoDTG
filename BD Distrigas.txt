@@ -1,0 +1,56 @@
+CREATE TABLE Clientes (
+    ClienteID SERIAL PRIMARY KEY,
+    Titular VARCHAR(100),
+    Celular VARCHAR(20),
+    Email VARCHAR(100),
+    Direccion VARCHAR(255),
+    Localidad VARCHAR(100),
+    CUT_DNI VARCHAR(20),
+    Tarifa VARCHAR(50)
+);
+
+CREATE TABLE Matafuegos (
+    MatafuegoID SERIAL PRIMARY KEY,
+    ClienteID INT,
+    NumeroMatafuego VARCHAR(50),
+    AnioFabricacion INT,
+    Dominio VARCHAR(50),
+    Categoria VARCHAR(50),
+    Forma VARCHAR(50),
+    AgenteExtintor VARCHAR(50),
+    Capacidad VARCHAR(50),
+    VencPH DATE,
+    VencRecarga DATE,
+    Precio DECIMAL(10, 2),
+    Empresa VARCHAR(100),
+    Direccion VARCHAR(255),
+    FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID)
+);
+
+CREATE TABLE Recargas (
+    RecargaID SERIAL PRIMARY KEY,
+    MatafuegoID INT,
+    FechaRecarga DATE,
+    Precio DECIMAL(10, 2),
+    Total DECIMAL(10, 2),
+    Pagado BOOLEAN,
+    Entregado BOOLEAN,
+    Observaciones TEXT,
+    FOREIGN KEY (MatafuegoID) REFERENCES Matafuegos(MatafuegoID)
+);
+
+CREATE TABLE DetallesRecarga (
+    DetalleID SERIAL PRIMARY KEY,
+    RecargaID INT,
+    Descripcion VARCHAR(255),
+    Precio DECIMAL(10, 2),
+    FOREIGN KEY (RecargaID) REFERENCES Recargas(RecargaID)
+);
+
+CREATE TABLE Capturas (
+    CapturaID SERIAL PRIMARY KEY,
+    RecargaID INT,
+    Imagen BYTEA,
+    FechaCaptura DATE,
+    FOREIGN KEY (RecargaID) REFERENCES Recargas(RecargaID)
+);
